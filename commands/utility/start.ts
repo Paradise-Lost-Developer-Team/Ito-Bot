@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { ChatInputCommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction, MessageFlags } from 'discord.js';
 import { getTheme } from '../../utils/themeManager';
 import { hasGame, createGame, drawNewTopic } from '../../utils/gameManager';
 
@@ -19,8 +19,19 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     return;
   }
   createGame(guildId, theme);
-  const topic = drawNewTopic(guildId);
-  await interaction.reply(
-    `ゲームを開始しました！ お題テーマは **${theme}**、最初のお題は **${topic}** です。`
-  );
+  try {
+    const topic = drawNewTopic(guildId);
+    await interaction.reply(
+      `ゲームを開始しました！ お題テーマは **${theme}**、最初のお題は **${topic}** です。`
+    );
+  } catch (error: any) {
+    if (error.message.includes('No topics for theme')) {
+      await interaction.reply({
+        content: `指定されたテーマ「${theme}」にはトピックがありません。別のテーマを選択してください。`,
+        flags: MessageFlags.Ephemeral
+      });
+      return;
+    }
+    throw error;
+  }
 }

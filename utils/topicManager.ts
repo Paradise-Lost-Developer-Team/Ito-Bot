@@ -1,5 +1,5 @@
 export const topicsByTheme: Record<string, string[]> = {
-    mahjong: [
+    Mahjong: [
         '一番強い役は何?',
         '最も苦手な役は何?',
         '初めて覚えた役は何?',
