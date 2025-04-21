@@ -79,15 +79,20 @@ export function clearDeclarations(guildId: string): void {
     game.declarations.clear();
 }
 
-/** 指定ユーザーに手札を引かせる。既に引いていればその数字を返す */
+/** 指定ユーザーに0〜100の数字をランダムで引かせる。既に引いていればその数字を返す */
 export function drawHand(guildId: string, userId: string): number {
     const game = games.get(guildId);
     if (!game) throw new Error('Game not found');
-    if (game.hands.has(userId)) return game.hands.get(userId)![0];
+    // 既に手札があるならそれを返す
+    if (game.hands.has(userId)) {
+        return game.hands.get(userId)![0];
+    }
+    // 重複しないようにランダムで数字を選ぶ
     let num: number;
+    const used = new Set<number>(Array.from(game.hands.values()).flat());
     do {
-        num = Math.floor(Math.random() * 101);
-    } while (Array.from(game.hands.values()).flat().includes(num));
+        num = Math.floor(Math.random() * 101);  // 0〜100
+    } while (used.has(num));
     game.hands.set(userId, [num]);
     return num;
 }
