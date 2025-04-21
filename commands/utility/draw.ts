@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChatInputCommandInteraction, MessageFlags } from 'discord.js';
-import { hasGame, getHands } from '../../utils/gameManager';
+import { hasGame, drawHand } from '../../utils/gameManager';
 
 export const data = new SlashCommandBuilder()
   .setName('draw')
@@ -15,9 +15,9 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     });
     return;
   }
-  const hand = getHands(gid, interaction.user.id);
+  const hand = drawHand(gid, interaction.user.id);
   await interaction.reply({
-    content: `あなたの手札: ${hand.join(', ')}`,
+    content: `あなたの手札: ${hand}`,
     flags: MessageFlags.Ephemeral
   });
 }

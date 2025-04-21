@@ -177,13 +177,6 @@ export function prepareNextStage(guildId: string) {
     };
 }
 
-/** 指定ユーザーの手札を返す */
-export function getHands(guildId: string, userId: string): number[] {
-    const game = games.get(guildId);
-    if (!game) throw new Error('Game not found');
-    return game.hands.get(userId) ?? [];
-}
-
 /** ゲーム終了判定: 'win' | 'lose' | null */
 export function checkGameEnd(guildId: string): 'win' | 'lose' | null {
   const game = games.get(guildId);
