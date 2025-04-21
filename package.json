@@ -1,7 +1,8 @@
 {
   "type": "commonjs",
   "dependencies": {
-    "discord.js": "^14.18.0"
+    "discord.js": "^14.18.0",
+    "typescript": "^5.8.3"
   },
   "name": "ito-bot",
   "version": "1.0.0",
@@ -18,7 +19,8 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "prettier": "prettier --write .",
-    "prettier:check": "prettier --check ."
+    "prettier:check": "prettier --check .",
+    "dev": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -30,5 +32,8 @@
   "bugs": {
     "url": "https://github.com/Paladise-Lost-Developer-Team/Ito-Bot/issues"
   },
-  "homepage": "https://github.com/Paladise-Lost-Developer-Team/Ito-Bot#readme"
+  "homepage": "https://github.com/Paladise-Lost-Developer-Team/Ito-Bot#readme",
+  "devDependencies": {
+    "ts-node": "^10.0.0"
+  }
 }

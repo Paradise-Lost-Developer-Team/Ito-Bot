@@ -1,7 +1,7 @@
 export const topicsByTheme: Record<string, string[]> = {
     mahjong: [
         '一番強い役は何?',
-        '一番弱い役は何?',
+        '最も苦手な役は何?',
         
     ]
 };
