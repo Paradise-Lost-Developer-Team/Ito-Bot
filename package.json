@@ -1,5 +1,19 @@
 {
+  "name": "ito-bot",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node --loader ts-node/esm index.ts",
+    "build": "tsc",
+    "start:prod": "node dist/index.js"
+  },
   "dependencies": {
-    "discord.js": "^14.18.0"
+    "discord.js": "^14.11.0",
+    "@discordjs/rest": "^1.2.0",
+    "@discordjs/builders": "^1.4.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.5",
+    "ts-node": "^10.9.1"
   }
 }
