@@ -139,7 +139,7 @@ client.on("guildCreate", async (guild) => {
             .setDescription("サーバーに招待いただきありがとうございます！このBotを使ってDiscord上でItoをプレイできます。")
             .addFields(
                 { name: "ゲーム開始", value: "• /start - 新しいItoゲームを開始します\n• /join  - 参加希望を登録します" },
-                { name: "ゲーム進行", value: "• /move <色> - カードを場にプレイします\n• /hand - 現在の手札を確認します" },
+                { name: "ゲーム進行", value: "• /draw - 手札を引きます\n• /hand - 現在の手札を確認します" },
                 { name: "終了・その他", value: "• /end - ゲームを終了します\n• /help - コマンド一覧を表示します" },
                 { name: "ルールブック", value: "公式ルールや遊び方は下のリンクからご確認ください。" }
             )
