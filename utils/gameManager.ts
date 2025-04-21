@@ -1,4 +1,6 @@
 import { drawTopic } from './topicManager';
+import { promises as fs } from 'fs'
+import path from 'path'
 
 export interface ItoGame {
     players: string[];
@@ -106,23 +108,32 @@ export type PlayResult =
 export function playCard(guildId: string, userId: string, card: number): PlayResult {
     const game = games.get(guildId);
     if (!game) throw new Error('Game not found');
+
+    // ゲーム未開始なら初手扱い
     if (!game.started) {
         game.started = true;
         game.lastPlayed = card;
         game.pile.push(card);
         return { status: 'start', card };
     }
+
+    // 昇順なら成功
     if (card >= (game.lastPlayed ?? 0)) {
         game.lastPlayed = card;
         game.pile.push(card);
         return { status: 'ok', card };
     }
+
+    // 失敗時の処理：ライフを減らし、0未満にならないように調整
     const removedCount = game.pile.length;
     const removedPile = [...game.pile];
-    game.lives -= removedCount;
+    game.lives = Math.max(0, game.lives - removedCount);
+
+    // 場をクリアして次のステージ準備
     game.pile = [];
     game.started = false;
     game.lastPlayed = null;
+
     return { status: 'fail', card, removedCount, pile: removedPile, lives: game.lives };
 }
 
@@ -192,6 +203,22 @@ export function checkGameEnd(guildId: string): 'win' | 'lose' | null {
 }
 
 /** ゲームデータを削除 */
-export function deleteGame(guildId: string): void {
-  games.delete(guildId);
+
+const JOINERS_PATH = path.resolve(__dirname, '../joiners.json')
+
+export async function deleteGame(guildId: string): Promise<void> {
+    // メモリ上のゲームデータ削除
+    games.delete(guildId)
+
+    // joiners.json からも該当 guildId を削除
+    try {
+        const raw = await fs.readFile(JOINERS_PATH, 'utf8')
+        const joiners = JSON.parse(raw) as Record<string, unknown>
+        if (guildId in joiners) {
+            delete joiners[guildId]
+            await fs.writeFile(JOINERS_PATH, JSON.stringify(joiners, null, 2), 'utf8')
+        }
+    } catch (err) {
+        console.error('Failed to update joiners.json:', err)
+    }
 }
