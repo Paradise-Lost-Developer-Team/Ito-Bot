@@ -141,3 +141,5 @@ data
 build
 
 tsconfig.json
+
+.vscode
