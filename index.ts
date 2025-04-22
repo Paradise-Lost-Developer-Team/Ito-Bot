@@ -148,9 +148,17 @@ client.on("guildCreate", async (guild) => {
 
         const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
-                .setLabel("公式ルール&遊び方")
+                .setLabel("利用規約")
                 .setStyle(ButtonStyle.Link)
-                .setURL("https://arclightgames.jp/product/ito/"),
+                .setURL("https://paradise-lost-developer-team.github.io/Ito-Bot/Term-of-Service"),
+            new ButtonBuilder()
+                .setLabel("プライバシーポリシー")
+                .setStyle(ButtonStyle.Link)
+                .setURL("https://paradise-lost-developer-team.github.io/Ito-Bot/Privacy-Policy"),
+            new ButtonBuilder()
+                .setLabel("サポートサーバー")
+                .setStyle(ButtonStyle.Link)
+                .setURL("https://discord.gg/c4TrxUD5XX"),
         );
 
         const systemChannel = guild.systemChannel;
