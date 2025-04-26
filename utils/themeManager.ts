@@ -1,4 +1,4 @@
-export const themes = [ 'Mahjong', 'easy', 'Normal', 'hard' ];
+export const themes = [ 'Mahjong', 'Easy', 'Normal', 'Hard' ];
 const guildThemes = new Map<string, string>();
 
 export function setTheme(guildId: string, theme: string) {
