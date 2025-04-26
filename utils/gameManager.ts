@@ -190,16 +190,16 @@ export function prepareNextStage(guildId: string) {
 
 /** ゲーム終了判定: 'win' | 'lose' | null */
 export function checkGameEnd(guildId: string): 'win' | 'lose' | null {
-  const game = games.get(guildId);
-  if (!game) return null;
-  // ライフ0 → 敗北
-  if (game.lives <= 0) return 'lose';
-  // 3rdステージかつ全員の手札が空 → 勝利
-  if (game.stage === 3) {
+    const game = games.get(guildId);
+    if (!game) return null;
+    // ライフ0 → 敗北
+    if (game.lives <= 0) return 'lose';
+    // 第3ステージをクリアしたら勝利
     const allEmpty = Array.from(game.hands.values()).every(h => h.length === 0);
-    if (allEmpty) return 'win';
-  }
-  return null;
+    if (game.stage >= 3 && allEmpty) {
+        return 'win';
+    }
+    return null;
 }
 
 /** ゲームデータを削除 */
