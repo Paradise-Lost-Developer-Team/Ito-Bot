@@ -16,6 +16,7 @@ export interface ItoGame {
     lastPlayed: number | null;
     pile: number[];
     lives: number;
+    playedNumbers?: Map<string, number>;
 }
 
 const games = new Map<string, ItoGame>();
@@ -109,6 +110,12 @@ export function playCard(guildId: string, userId: string, card: number): PlayRes
     const game = games.get(guildId);
     if (!game) throw new Error('Game not found');
 
+    // プレイヤーと引いた数字を一時的に保存
+    if (!game["playedNumbers"]) {
+        game["playedNumbers"] = new Map<string, number>();
+    }
+    game["playedNumbers"].set(userId, card);
+
     // ゲーム未開始なら初手扱い
     if (!game.started) {
         game.started = true;
@@ -124,8 +131,8 @@ export function playCard(guildId: string, userId: string, card: number): PlayRes
         return { status: 'ok', card };
     }
 
-    // 失敗時の処理：ライフを減らし、0未満にならないように調整
-    const removedCount = game.pile.length;
+    // 失敗時の処理：出せなかったプレイヤーの数だけよけた枚数としてライフを減らす
+    const removedCount = game.players.length - game.pile.length;
     const removedPile = [...game.pile];
     game.lives = Math.max(0, game.lives - removedCount);
 
@@ -149,7 +156,7 @@ export function prepareNextStage(guildId: string) {
     if (!game) throw new Error('Game not found');
     // ステージインクリメント
     game.stage = game.stage + 1;
-    // ① 回復処理（2人以上なら +1, 上限3）
+    // ステージクリアボーナス：3人以上のときのみライフ+1（上限3）
     if (game.players.length > 2) {
         game.lives = Math.min(3, game.lives + 1);
     }
