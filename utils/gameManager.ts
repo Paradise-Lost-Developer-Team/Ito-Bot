@@ -154,7 +154,16 @@ export function getLives(guildId: string): number {
 export function prepareNextStage(guildId: string) {
     const game = games.get(guildId);
     if (!game) throw new Error('Game not found');
-    // ステージインクリメント
+    // ステージインクリメント（ステージ3まで）
+    if (game.stage >= 3) {
+        // ステージ3クリア後は何もしない
+        return {
+            stage: game.stage,
+            lives: game.lives,
+            momoCard: game.momoCard,
+            hands: Object.fromEntries(game.hands)
+        };
+    }
     game.stage = game.stage + 1;
     // ステージクリアボーナス：3人以上のときのみライフ+1（上限3）
     if (game.players.length > 2) {
